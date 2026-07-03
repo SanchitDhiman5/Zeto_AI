@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AI Assistant Chatbot</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="css/variables.css" />
+    <link rel="stylesheet" href="css/animations.css" />
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/responsive.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+  </head>
+  <body
+    class="bg-primary text-main h-screen flex overflow-hidden transition-colors duration-300 relative"
+  >
+    <div
+      id="sidebar-overlay"
+      class="hidden fixed inset-0 bg-black/60 z-30 md:hidden backdrop-blur-sm transition-opacity"
+    ></div>
+
+    <aside
+      id="sidebar"
+      class="fixed inset-y-0 left-0 z-40 w-64 bg-secondary border-r border-gray-700 flex flex-col transition-transform duration-300 transform -translate-x-full md:translate-x-0 md:static md:z-20 h-full"
+    >
+      <div
+        class="p-4 flex items-center justify-between border-b border-gray-700"
+      >
+        <h1 class="text-xl font-bold flex items-center gap-2">
+          <i class="fa-solid fa-robot text-accent"></i> Gemini UI
+        </h1>
+        <button
+          id="close-sidebar-btn"
+          class="md:hidden text-gray-400 hover:text-white p-2"
+          aria-label="Close sidebar"
+        >
+          <i class="fa-solid fa-xmark text-xl"></i>
+        </button>
+      </div>
+
+      <div class="p-4">
+        <button
+          id="new-chat-btn"
+          class="w-full bg-accent hover:bg-blue-600 text-white py-2 px-4 rounded-md flex items-center justify-center gap-2 transition-colors shadow-lg"
+        >
+          <i class="fa-solid fa-plus"></i> New Chat
+        </button>
+      </div>
+
+      <div class="px-4 pb-2">
+        <div class="relative">
+          <i class="fa-solid fa-search absolute left-3 top-3 text-gray-400"></i>
+          <input
+            type="text"
+            id="search-chat"
+            placeholder="Search chats..."
+            class="w-full bg-primary border border-gray-700 rounded-md py-2 pl-9 pr-3 text-sm focus:outline-none focus:border-accent"
+          />
+        </div>
+      </div>
+
+      <div
+        class="flex-1 overflow-y-auto p-4 custom-scrollbar"
+        id="chat-history-list"
+      ></div>
+
+      <div
+        class="p-4 border-t border-gray-700 flex justify-between items-center"
+      >
+        <button
+          id="theme-toggle"
+          class="text-gray-400 hover:text-white transition-colors p-2"
+          aria-label="Toggle Theme"
+        >
+          <i class="fa-solid fa-moon"></i>
+        </button>
+        <button
+          id="clear-chats-btn"
+          class="text-red-400 hover:text-red-300 text-sm transition-colors p-2"
+        >
+          Clear All
+        </button>
+      </div>
+    </aside>
+
+    <main class="flex-1 flex flex-col relative h-full w-full max-w-full">
+      <header
+        class="md:hidden flex items-center justify-between p-4 bg-secondary border-b border-gray-700 shadow-sm z-10"
+      >
+        <button
+          id="open-sidebar-btn"
+          class="text-gray-400 hover:text-white p-2"
+          aria-label="Open sidebar"
+        >
+          <i class="fa-solid fa-bars text-xl"></i>
+        </button>
+        <h1 class="font-bold">Gemini UI</h1>
+        <div class="w-8"></div>
+      </header>
+
+      <div
+        id="chat-container"
+        class="flex-1 overflow-y-auto p-4 md:p-8 custom-scrollbar scroll-smooth pb-32 md:pb-36"
+      >
+        <div
+          id="welcome-screen"
+          class="h-full flex flex-col items-center justify-center text-center animate-fade-in px-4"
+        >
+          <i class="fa-solid fa-sparkles text-5xl text-accent mb-4"></i>
+          <h2 class="text-2xl md:text-3xl font-bold mb-2">
+            How can I help you today?
+          </h2>
+          <p class="text-gray-400 max-w-md text-sm md:text-base">
+            I'm your AI assistant powered by Gemini. Ask me anything, upload
+            images, or try a prompt below.
+          </p>
+          <div
+            class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-8 w-full max-w-2xl"
+          >
+            <button
+              class="prompt-suggestion bg-secondary p-4 rounded-lg border border-gray-700 hover:border-accent transition-colors text-left shadow-sm"
+            >
+              <i class="fa-solid fa-code text-accent mb-2"></i>
+              <p class="text-sm">
+                Write a JavaScript function to debounce an API call.
+              </p>
+            </button>
+            <button
+              class="prompt-suggestion bg-secondary p-4 rounded-lg border border-gray-700 hover:border-accent transition-colors text-left shadow-sm"
+            >
+              <i class="fa-solid fa-pen-nib text-accent mb-2"></i>
+              <p class="text-sm">
+                Draft a professional email to my boss asking for a code review.
+              </p>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div
+        class="absolute bottom-0 left-0 right-0 p-3 md:p-4 bg-gradient-to-t from-primary via-primary to-transparent z-10"
+      >
+        <div class="max-w-4xl mx-auto relative flex flex-col gap-2">
+          <div
+            id="image-preview-container"
+            class="hidden flex gap-2 overflow-x-auto p-2 bg-secondary rounded-t-lg border border-gray-700 border-b-0 shadow-lg"
+          ></div>
+
+          <div
+            class="flex items-end bg-secondary rounded-lg border border-gray-700 p-1.5 md:p-2 focus-within:border-accent transition-colors shadow-lg"
+          >
+            <label
+              for="file-upload"
+              class="p-2 md:p-3 text-gray-400 hover:text-white cursor-pointer transition-colors"
+              aria-label="Upload Image"
+            >
+              <i class="fa-solid fa-image text-lg"></i>
+              <input
+                type="file"
+                id="file-upload"
+                class="hidden"
+                accept=".png, .jpg, .jpeg"
+                multiple
+              />
+            </label>
+
+            <textarea
+              id="chat-input"
+              rows="1"
+              placeholder="Message AI... (Shift+Enter for new line)"
+              class="flex-1 bg-transparent border-none focus:outline-none resize-none max-h-32 md:max-h-48 py-2.5 px-2 text-sm md:text-base custom-scrollbar"
+            ></textarea>
+
+            <div class="flex items-center gap-1 md:gap-2">
+              <button
+                id="stop-btn"
+                class="hidden p-2 md:p-3 text-red-500 hover:text-red-400 transition-colors"
+                aria-label="Stop generation"
+              >
+                <i class="fa-solid fa-circle-stop text-lg"></i>
+              </button>
+              <button
+                id="send-btn"
+                class="p-2 md:p-3 text-accent hover:text-blue-400 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                aria-label="Send message"
+              >
+                <i class="fa-solid fa-paper-plane text-lg"></i>
+              </button>
+            </div>
+          </div>
+          <div class="text-center text-[10px] md:text-xs text-gray-500 mt-1">
+            AI can make mistakes. Verify important information.
+          </div>
+        </div>
+      </div>
+
+      <button
+        id="scroll-bottom-btn"
+        class="hidden absolute bottom-24 md:bottom-28 right-4 md:right-8 bg-secondary border border-gray-600 rounded-full w-10 h-10 flex items-center justify-center text-gray-300 hover:text-white shadow-lg z-10 transition-transform hover:scale-105"
+      >
+        <i class="fa-solid fa-arrow-down"></i>
+      </button>
+    </main>
+
+    <script type="module" src="js/app.js"></script>
+  </body>
+</html>

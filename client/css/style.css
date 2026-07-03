@@ -1,0 +1,73 @@
+/* Core Overrides mapped to CSS Variables for deep integration */
+.bg-primary {
+  background-color: var(--color-bg-primary);
+}
+.bg-secondary {
+  background-color: var(--color-bg-secondary);
+}
+.text-main {
+  color: var(--color-text-main);
+}
+.text-accent {
+  color: var(--color-accent);
+}
+
+/* Custom Scrollbar */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background-color: var(--color-border);
+  border-radius: 10px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background-color: var(--color-text-muted);
+}
+
+/* Message Bubbles */
+.message-bubble {
+  max-width: 85%;
+  word-wrap: break-word;
+}
+.user-message {
+  background-color: var(--color-bg-secondary);
+  border: 1px solid var(--color-border);
+}
+.ai-message {
+  background-color: transparent;
+}
+
+/* Markdown Rendering Styles */
+.markdown-body pre {
+  background-color: #1e1e1e;
+  color: #d4d4d4;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  overflow-x: auto;
+  margin: 1rem 0;
+  position: relative;
+}
+.markdown-body code {
+  font-family: monospace;
+  background-color: rgba(128, 128, 128, 0.2);
+  padding: 0.125rem 0.25rem;
+  border-radius: 0.25rem;
+}
+.markdown-body pre code {
+  background-color: transparent;
+  padding: 0;
+}
+.markdown-body table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1rem 0;
+}
+.markdown-body th,
+.markdown-body td {
+  border: 1px solid var(--color-border);
+  padding: 0.5rem;
+}
